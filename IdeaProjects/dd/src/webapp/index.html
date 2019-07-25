@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="jquery.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            var url="ws://localhost:8080/ChatHandler/";
+            var ws  = null;
+            $("#join").click(function () {
+                var name = $("#name").val();
+                url = url + name;
+                ws = new WebSocket(url);
+                //给ws对象绑定使劲
+                ws.onopen = function () {
+                    console.info("连接服务器成功");
+                };
+                ws.onclose = function () {
+                    $("#message").append(":离开聊天室");
+                    console.info("断开连接");
+                };
+                ws.onmessage = function (result) {
+                    $("message").append(result.data + "\n");
+                }
+            });
+            $("send").click(function () {
+                var content= $("#content").val();
+                if(ws!=null){
+                    ws.send(content);
+                    $("#content").val("")
+                }
+            });
+            $("#leave").click(function () {
+                if(ws!=null){
+                    ws.close();
+                }
+            })
+        })
+    </script>
+    <title>Title</title>
+</head>
+<body>
+    <div>
+        <p>steam股东群</p>
+        <div>
+            <button id="join">加入聊天室</button>
+            <button id="leave">离开聊天室</button>
+        </div>
+        用户名<input type="text" id="name">
+        <textarea rows="10" cols="50" disabled="disabled"></textarea>
+        <input type="text" id="content"><br><br>
+        <button id="send">发送消息</button>
+    </div>
+</body>
+</html>
