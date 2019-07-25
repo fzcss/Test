@@ -1,3 +1,4 @@
+package com.dd;
 /**
  * 
  */
@@ -11,5 +12,8 @@
 public class Test {
 	public static void main(String[] args) {
 		System.out.println("hhh");
+	}
+	public void fun(){
+		System.out.println("dddd");
 	}
 }
